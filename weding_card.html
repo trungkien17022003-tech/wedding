@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Mời Thành Hôn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2E6B56; /* Màu xanh lá cây đậm như thiệp gốc */
+            --accent-color: #0088FF;  /* Màu xanh dương của khung người được mời */
+            --text-dark: #333333;
+            --bg-card: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0f4f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Khung thiệp */
+        .wedding-card {
+            background-color: var(--bg-card);
+            width: 100%;
+            max-width: 500px;
+            border: 12px solid #E8F0EC;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Họa tiết lá cây ở góc (mô phỏng bằng CSS thuần/SVG nhẹ) */
+        .decor-top-left {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 120px;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .invitation-title {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+
+        /* Khung tên người được mời (Biến dễ dàng thay đổi) */
+        .guest-box {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 8px 25px;
+            border-radius: 12px;
+            margin: 15px 0;
+            min-width: 200px;
+            box-shadow: 0 4px 10px rgba(0, 136, 255, 0.2);
+        }
+
+        .invitation-text {
+            font-size: 12px;
+            font-weight: 1000;
+            color: #444;
+            letter-spacing: 1px;
+            line-height: 1.6;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        /* Tên Cô dâu - Chú rể */
+        .couple-names {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+
+        .ampersand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 40px;
+            font-style: italic;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        /* Địa điểm */
+        .location-section {
+            margin: 35px 0;
+        }
+
+        .location-title {
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: #777;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .location-main {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .location-detail {
+            font-size: 13px;
+            font-weight: 1000;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        /* Khung thời gian */
+        .time-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            padding: 15px 0;
+            margin: 25px 0;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .time-box:first-child {
+            border-right: 1px solid #ccc;
+        }
+
+        .time-label {
+            font-size: 11px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .time-value {
+            font-size: 22px;
+            font-weight: 600;
+            color: #111;
+        }
+
+        .lunar-subtext {
+            font-size: 13px;
+            font-style: italic;
+            color: #555;
+            margin-top: 15px;
+        }
+
+        .welcome-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 18px;
+            color: #333;
+            margin: 30px 0;
+        }
+
+        /* Thông tin cha mẹ */
+        .parents-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-top: 1px dashed #ddd;
+            padding-top: 20px;
+            font-size: 11px;
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .parents-column {
+            width: 45%;
+        }
+
+        .parents-title {
+            font-weight: 600;
+            color: #777;
+            margin-bottom: 4px;
+        }
+
+        .parents-names {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .role-note {
+            font-style: italic;
+            color: #666;
+            margin-top: 4px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wedding-card">
+        <svg class="decor-top-left" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0C30 10 60 5 80 30C50 35 20 20 0 0Z" fill="#2E6B56" opacity="0.15"/>
+            <path d="M0 20C15 35 40 30 55 50C35 50 15 40 0 20Z" fill="#2E6B56" opacity="0.1"/>
+            <circle cx="15" cy="40" r="3" fill="#2E6B56" opacity="0.3"/>
+            <circle cx="45" cy="20" r="2" fill="#2E6B56" opacity="0.3"/>
+        </svg>
+
+        <p class="invitation-title">Trân trọng kính mời</p>
+        
+        <div class="guest-box" id="guest-name">Khách Quý</div>
+
+        <p class="invitation-text">Tới dự bữa cơm thân mật<br>mừng lễ vu quy của hai con chúng tôi</p>
+
+        <div class="couple-names">
+            <div class="groom">VŨ VĂN NHẬT</div>
+            <div class="ampersand">&</div>
+            <div class="bride">NGUYỄN THỊ KIỀU TRINH</div>
+        </div>
+
+        <div class="location-section">
+            <p class="location-title">Được tổ chức tại</p>
+            <p class="location-main">NHÀ CÔ DÂU</p>
+            <p class="location-detail">Ngõ Nghè, gần chợ Đại Quan,<br>Xã Chí Minh, Tỉnh Hưng Yên</p>
+        </div>
+
+        <div class="time-container">
+            <div class="time-box">
+                <p class="time-label">Vào lúc</p>
+                <p class="time-value">17:00</p>
+                <p class="time-value">8:30</p> 
+            </div>
+            <div class="time-box">
+                <p class="time-label">Âm Lịch</p>
+                <p class="time-value">21</p>
+                <p class="time-value">22</p>
+            </div>
+        </div>
+        
+        <p class="lunar-subtext" style="font-size: 20px">Tháng 4 năm Bính Ngọ (Âm lịch)</p>
+        <p class="lunar-subtext" style="margin-top: 5px; font-size: 14px; color: #999;">
+            (Tức ngày 6.6.2026 và ngày 7.6.2026 Dương lịch)
+        </p>
+
+        <p class="welcome-text">Rất hân hạnh được đón tiếp!</p>
+
+        <div class="parents-section">
+            <div class="parents-column">
+                <p class="parents-title">Nhà Trai</p>
+                <p class="parents-names">
+                    Vũ Văn Tám<br>
+                    Nguyễn Thị Chăm
+                </p>
+                <span class="role-note">Chú rể: Vũ Nhật</span>
+            </div>
+            <div class="parents-column" style="text-align: right;">
+                <p class="parents-title">Nhà Gái</p>
+                <p class="parents-names">
+                    Nguyễn Văn Kết<br>
+                    Đào Thị Thúy
+                </p>
+                <span class="role-note">Cô dâu: Kiều Trinh</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Lấy toàn bộ tham số trên thanh địa chỉ
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Tìm tham số có tên là 'name'
+        const guestName = urlParams.get('name');
+        
+        // Nếu trên link có truyền tên, thay thế chữ "Khách Quý" bằng tên đó
+        if (guestName) {
+            document.getElementById('guest-name').innerText = guestName;
+        }
+    </script>
+</body>
+</html>
