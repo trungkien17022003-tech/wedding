@@ -8,8 +8,8 @@
     
     <style>
         :root {
-            --primary-color: #2E6B56; /* Màu xanh lá cây đậm như thiệp gốc */
-            --accent-color: #0088FF;  /* Màu xanh dương của khung người được mời */
+            --primary-color: #2E6B56; 
+            --accent-color: #0088FF;  
             --text-dark: #333333;
             --bg-card: #FFFFFF;
         }
@@ -24,7 +24,7 @@
             font-family: 'Montserrat', sans-serif;
             background-color: #f0f4f1;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
@@ -44,7 +44,6 @@
             overflow: hidden;
         }
 
-        /* Họa tiết lá cây ở góc (mô phỏng bằng CSS thuần/SVG nhẹ) */
         .decor-top-left {
             position: absolute;
             top: -10px;
@@ -63,7 +62,7 @@
             text-transform: uppercase;
         }
 
-        /* Khung tên người được mời (Biến dễ dàng thay đổi) */
+        /* Khung tên người được mời */
         .guest-box {
             display: inline-block;
             background-color: var(--accent-color);
@@ -87,7 +86,6 @@
             margin-bottom: 30px;
         }
 
-        /* Tên Cô dâu - Chú rể */
         .couple-names {
             font-family: 'Cormorant Garamond', serif;
             font-size: 32px;
@@ -104,7 +102,6 @@
             margin: 10px 0;
         }
 
-        /* Địa điểm */
         .location-section {
             margin: 35px 0;
         }
@@ -132,7 +129,6 @@
             line-height: 1.5;
         }
 
-        /* Khung thời gian */
         .time-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -182,7 +178,6 @@
             margin: 30px 0;
         }
 
-        /* Thông tin cha mẹ */
         .parents-section {
             display: flex;
             justify-content: space-between;
@@ -214,6 +209,70 @@
             color: #666;
             margin-top: 4px;
             display: block;
+        }
+
+        /* --- PHẦN TIỆN ÍCH DÀNH CHO NGƯỜI ĐI MỜI --- */
+        .admin-panel {
+            background-color: #fff;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #ddd;
+        }
+
+        .admin-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .admin-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .admin-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .admin-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .admin-btn:hover {
+            background-color: #1e4a3b;
+        }
+
+        .success-toast {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #2d8a4e;
+            text-align: center;
+            display: none;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -284,16 +343,61 @@
             </div>
         </div>
     </div>
+
+    <div class="admin-panel" id="admin-box">
+        <p class="admin-title">⚙️ Công cụ nhập tên khách nhanh (Chỉ bạn nhìn thấy)</p>
+        <div class="input-group">
+            <input type="text" id="name-input" class="admin-input" placeholder="Ví dụ: Vợ chồng bạn Két, Anh Nam...">
+            <button onclick="generateAndCopyLink()" class="admin-btn">Lấy Link</button>
+        </div>
+        <div class="success-toast" id="toast-msg">Đã tạo và copy link! Hãy gửi ngay qua Zalo.</div>
+    </div>
+
     <script>
-        // Lấy toàn bộ tham số trên thanh địa chỉ
+        // 1. Đọc tên từ URL để hiển thị lên thiệp
         const urlParams = new URLSearchParams(window.location.search);
-        
-        // Tìm tham số có tên là 'name'
         const guestName = urlParams.get('name');
+        const isAdmin = urlParams.get('admin'); // Tham số kiểm tra xem có phải chủ nhà đang mở không
         
-        // Nếu trên link có truyền tên, thay thế chữ "Khách Quý" bằng tên đó
         if (guestName) {
             document.getElementById('guest-name').innerText = guestName;
+        }
+
+        // 2. ẨN công cụ tạo link đi nếu là KHÁCH MỜI mở.
+        // Chỉ khi link có dạng ?admin=true hoặc khi không có tên khách thì công cụ mới hiện ra.
+        if (guestName && isAdmin !== 'true') {
+            document.getElementById('admin-box').style.display = 'none';
+        }
+
+        // 3. Hàm xử lý khi bấm nút "Lấy Link"
+        function generateAndCopyLink() {
+            const inputVal = document.getElementById('name-input').value.trim();
+            if (!inputVal) {
+                alert('Vui lòng nhập tên khách mời trước nhé!');
+                return;
+            }
+
+            // Lấy link gốc hiện tại (bỏ các tham số cũ đi)
+            const baseLink = window.location.protocol + '//' + window.location.host + window.location.pathname;
+            
+            // Tạo link mới chứa tên khách mời
+            const finalLink = `${baseLink}?name=${encodeURIComponent(inputVal)}`;
+
+            // Tự động copy link vào bộ nhớ tạm
+            navigator.clipboard.writeText(finalLink).then(() => {
+                // Hiển thị thông báo thành công
+                const toast = document.getElementById('toast-msg');
+                toast.style.display = 'block';
+                
+                // Tiện thể đổi luôn tên trên thiệp để người dùng xem trước thử
+                document.getElementById('guest-name').innerText = inputVal;
+
+                // Ẩn thông báo sau 3 giây
+                setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+            }).catch(err => {
+                // Phòng hờ trình duyệt chặn sao chép tự động
+                alert('Hãy copy link này gửi đi: ' + finalLink);
+            });
         }
     </script>
 </body>
