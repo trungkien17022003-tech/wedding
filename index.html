@@ -42,7 +42,7 @@
             </div>
             
             <div class="map-embed">
-                <iframe src="https://www.google.com/maps/embed?pb=!4v1779871128795!6m8!1m7!1shVw1ZX7FxHx-4obrsUVIsw!2m2!1d20.79030365273665!2d105.9857242743762!3f59.14076421414664!4f-26.032987768683626!5f0.7820865974627469" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!4v1779871128795!6m8!1m7!1shVw1ZX7FxHx-4obrsUVIsw!2m2!1d20.79030365273665!2d105.9857242743762!3f59.14076421414664!4f-26.032987768683626!5f0.7820865974627469" allowfullscreen="" loading="lazy" title="Bản đồ địa điểm nhà cô dâu"></iframe>
             </div>
 
             <a rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&destination=20.790194,105.986694&waypoints=%C4%90H51,+Ch%C3%AD+Minh,+Kho%C3%A1i+Ch%C3%A2u,+H%C6%B0ng+Y%C3%AAn" target="_blank" class="map-link-btn">
@@ -51,16 +51,16 @@
         </div>
 
         <div class="event-timeline">
-            <div class="event-item">
+            <div class="event-item" id="event-party">
                 <div class="event-name">BỮA CƠM THÂN MẬT</div>
                 <div class="event-time">17:00</div>
                 <div class="event-date">Thứ Bảy, ngày 06/06/2026</div>
                 <div class="event-lunar">(Tức chiều ngày 21 tháng 4 năm Bính Ngọ)</div>
             </div>
             
-            <div class="event-divider"></div>
+            <div class="event-divider" id="event-divider"></div>
             
-            <div class="event-item">
+            <div class="event-item" id="event-ceremony">
                 <div class="event-name">LỄ VU QUY</div>
                 <div class="event-time">08:30</div>
                 <div class="event-date">Chủ Nhật, ngày 07/06/2026</div>
@@ -79,7 +79,7 @@
                 </p>
                 <span class="role-note">Chú rể: Vũ Nhật</span>
             </div>
-            <div class="parents-column" style="text-align: right;">
+            <div class="parents-column parents-column-right">
                 <p class="parents-title">Nhà Gái</p>
                 <p class="parents-names">
                     Nguyễn Văn Kết<br>
@@ -91,9 +91,16 @@
     </div>
 
     <div class="admin-panel" id="admin-box">
-        <p class="admin-title">⚙️ Công cụ nhập tên khách nhanh (Chỉ bạn nhìn thấy)</p>
-        <div class="input-group">
+        <p class="admin-title">⚙️ Công cụ tạo Link mời (Chỉ bạn nhìn thấy)</p>
+        <div class="admin-form-group">
             <input type="text" id="name-input" class="admin-input" placeholder="Ví dụ: Vợ chồng AB, Anh A...">
+            
+            <select id="event-select" class="admin-input" aria-label="Lựa chọn sự kiện mời">
+                <option value="all" selected>Mời: Cả 2 bữa (Mặc định)</option>
+                <option value="party">Mời: CHỈ Bữa cơm thân mật (17:00)</option>
+                <option value="ceremony">Mời: CHỈ Lễ Vu Quy (08:30)</option>
+            </select>
+            
             <button onclick="generateAndCopyLink()" class="admin-btn">Lấy Link</button>
         </div>
     </div>
@@ -101,6 +108,7 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const guestName = urlParams.get('name');
+        const invType = urlParams.get('inv') || 'all'; 
         const isAdmin = urlParams.get('admin'); 
         
         if (guestName) {
@@ -111,21 +119,42 @@
             document.getElementById('admin-box').style.display = 'none';
         }
 
+        // BIẾN ĐIỀU KHIỂN SỰ KIỆN TỪ ID
+        const eventParty = document.getElementById('event-party');
+        const eventCeremony = document.getElementById('event-ceremony');
+        const eventDivider = document.getElementById('event-divider');
+
+        // LOGIC ẨN/HIỆN THEO URL
+        if (invType === 'party') {
+            if(eventCeremony) eventCeremony.style.display = 'none';
+            if(eventDivider) eventDivider.style.display = 'none';
+        } else if (invType === 'ceremony') {
+            if(eventParty) eventParty.style.display = 'none';
+            if(eventDivider) eventDivider.style.display = 'none';
+        }
+
         function generateAndCopyLink() {
             const inputVal = document.getElementById('name-input').value.trim();
+            const eventVal = document.getElementById('event-select').value;
+            
             if (!inputVal) {
                 alert('Vui lòng nhập tên khách mời trước nhé!');
                 return;
             }
 
             const baseLink = window.location.protocol + '//' + window.location.host + window.location.pathname;
-            const finalLink = `${baseLink}?name=${encodeURIComponent(inputVal)}`;
+            const finalLink = `${baseLink}?name=${encodeURIComponent(inputVal)}&inv=${eventVal}`;
 
             navigator.clipboard.writeText(finalLink).then(() => {
                 const toast = document.getElementById('toast-msg');
                 toast.classList.add('show');
                 
                 document.getElementById('guest-name').innerText = inputVal;
+                
+                // Hiển thị Preview
+                eventParty.style.display = (eventVal === 'ceremony') ? 'none' : 'block';
+                eventCeremony.style.display = (eventVal === 'party') ? 'none' : 'block';
+                eventDivider.style.display = (eventVal === 'all') ? 'block' : 'none';
 
                 setTimeout(() => { 
                     toast.classList.remove('show'); 
