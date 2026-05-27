@@ -4,351 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thiệp Mời Vu Quy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Montserrat:wght@400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --primary-color: #2E6B56; 
-            --accent-color: #0088FF;  
-            --text-dark: #333333;
-            --bg-card: #FFFFFF;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f0f4f1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 15px;
-        }
-
-        /* Khung thiệp */
-        .wedding-card {
-            background-color: var(--bg-card);
-            width: 100%;
-            max-width: 500px;
-            border: 12px solid #E8F0EC;
-            border-radius: 20px;
-            padding: 40px 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .decor-top-left {
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            width: 120px;
-            opacity: 0.8;
-            pointer-events: none;
-        }
-
-        .invitation-title {
-            font-size: 14px;
-            letter-spacing: 2px;
-            color: var(--text-dark);
-            font-weight: 600;
-            margin-top: 20px;
-            text-transform: uppercase;
-        }
-
-        /* Khung tên người được mời */
-        .guest-box {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            padding: 8px 25px;
-            border-radius: 12px;
-            margin: 15px 0;
-            min-width: 200px;
-            max-width: 100%;
-            word-wrap: break-word;
-            box-shadow: 0 4px 10px rgba(0, 136, 255, 0.2);
-        }
-
-        .invitation-text {
-            font-size: 12px;
-            font-weight: 700;
-            color: #444;
-            letter-spacing: 1px;
-            line-height: 1.6;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-        }
-
-        .couple-names {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--primary-color);
-            line-height: 1.3;
-        }
-
-        .ampersand {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 40px;
-            font-style: italic;
-            color: var(--primary-color);
-            margin: 5px 0;
-        }
-
-        .location-section {
-            margin: 35px 0;
-        }
-
-        .location-title {
-            font-size: 12px;
-            letter-spacing: 1px;
-            color: #777;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .location-main {
-            font-size: 20px;
-            font-weight: 700;
-            color: #111;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-
-        .location-detail {
-            font-size: 13px;
-            font-weight: 600;
-            color: #444;
-            line-height: 1.5;
-        }
-
-        /* Tối ưu lại phần hiển thị thời gian */
-        .time-container {
-            display: flex;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-            padding: 15px 0;
-            margin: 25px 0;
-        }
-
-        .time-box {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .time-box:first-child {
-            border-right: 1px solid #eee;
-        }
-
-        .time-label {
-            font-size: 11px;
-            color: #777;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .time-value {
-            font-size: 18px;
-            font-weight: 600;
-            color: #111;
-        }
-
-        .lunar-subtext {
-            font-size: 18px;
-            font-style: italic;
-            color: #333;
-            margin-top: 15px;
-            font-weight: 500;
-        }
-
-        .welcome-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 18px;
-            color: #333;
-            margin: 30px 0;
-        }
-
-        .parents-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-top: 1px dashed #ddd;
-            padding-top: 20px;
-            font-size: 11px;
-            text-align: left;
-            line-height: 1.6;
-        }
-
-        .parents-column {
-            width: 48%;
-        }
-
-        .parents-title {
-            font-weight: 600;
-            color: #777;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .parents-names {
-            color: #333;
-            font-weight: 500;
-        }
-
-        .role-note {
-            font-style: italic;
-            color: #666;
-            margin-top: 4px;
-            display: block;
-        }
-
-        /* --- PHẦN TIỆN ÍCH DÀNH CHO NGƯỜI ĐI MỜI --- */
-        .admin-panel {
-            background-color: #fff;
-            width: 100%;
-            max-width: 500px;
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #ddd;
-        }
-
-        .admin-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .admin-input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .admin-input:focus {
-            border-color: var(--primary-color);
-        }
-
-        .admin-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-
-        .admin-btn:hover {
-            background-color: #1e4a3b;
-        }
-
-        /* Toast thông báo nổi thiết kế mới hiện đại */
-        .toast-notification {
-            position: fixed;
-            top: -70px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #2d8a4e;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 9999;
-            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
-            opacity: 0;
-            pointer-events: none;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .toast-notification.show {
-            top: 20px;
-            opacity: 1;
-        }
-
-        /* --- RESPONSIVE OPTIMIZATION CHO MOBILE --- */
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-
-            .wedding-card {
-                border-width: 6px; /* Giảm độ dày viền trên màn hình bé */
-                padding: 30px 15px;
-                border-radius: 14px;
-            }
-
-            .couple-names {
-                font-size: 26px; /* Thu nhỏ tên CD-CR tránh tràn dòng */
-            }
-
-            .ampersand {
-                font-size: 32px;
-                margin: 2px 0;
-            }
-
-            .time-value {
-                font-size: 16px; /* Thu nhỏ số giờ/ngày một chút để cân đối */
-            }
-
-            .lunar-subtext {
-                font-size: 16px !important;
-            }
-
-            .lunar-subtext[style*="font-size: 14px"] {
-                font-size: 12px !important;
-            }
-
-            .input-group {
-                flex-direction: column; /* Đưa ô nhập liệu và nút bấm thành hàng dọc trên điện thoại nhỏ */
-            }
-
-            .admin-btn {
-                padding: 12px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="toast-notification" id="toast-msg">
-        <span>✅ Đã tạo và copy link vào máy! Hãy dán vào đâu đó để sủ dụng.</span>
+        <span>✅ Đã tạo và copy link vào máy! Hãy dán vào đâu đó để sử dụng.</span>
     </div>
 
     <div class="wedding-card">
@@ -363,7 +26,7 @@
         
         <div class="guest-box" id="guest-name">Khách Quý</div>
 
-        <p class="invitation-text">Tới dự bữa cơm thân mật<br>mừng lễ vu quy của hai con chúng tôi</p>
+        <p class="invitation-text">Tới dự bữa cơm thân mật<br>mừng lễ vu quy cùng gia đình chúng tôi</p>
 
         <div class="couple-names">
             <div class="groom">VŨ VĂN NHẬT</div>
@@ -377,23 +40,23 @@
             <p class="location-detail">Ngõ Nghè, gần chợ Đại Quan,<br>Xã Chí Minh, Tỉnh Hưng Yên</p>
         </div>
 
-        <div class="time-container">
-            <div class="time-box">
-                <p class="time-label">Vào lúc</p>
-                <p class="time-value">17:00 ngày 6/6</p>
-                <p class="time-value">08:30 ngày 7/6</p> 
+        <div class="event-timeline">
+            <div class="event-item">
+                <div class="event-name">BỮA CƠM THÂN MẬT</div>
+                <div class="event-time">17:00</div>
+                <div class="event-date">Thứ Bảy, ngày 06/06/2026</div>
+                <div class="event-lunar">(Tức chiều ngày 21 tháng 4 năm Bính Ngọ)</div>
             </div>
-            <div class="time-box">
-                <p class="time-label">Âm Lịch</p>
-                <p class="time-value">Chiều 21/4</p>
-                <p class="time-value">Sáng 22/4</p>
+            
+            <div class="event-divider"></div>
+            
+            <div class="event-item">
+                <div class="event-name">LỄ VU QUY</div>
+                <div class="event-time">08:30</div>
+                <div class="event-date">Chủ Nhật, ngày 07/06/2026</div>
+                <div class="event-lunar">(Tức sáng ngày 22 tháng 4 năm Bính Ngọ)</div>
             </div>
         </div>
-        
-        <p class="lunar-subtext" style="font-size: 20px">Tháng 4 năm Bính Ngọ (Âm lịch)</p>
-        <p class="lunar-subtext" style="margin-top: 5px; font-size: 14px; color: #999;">
-            (Tức ngày 6.6.2026 và ngày 7.6.2026 Dương lịch)
-        </p>
 
         <p class="welcome-text">Rất hân hạnh được đón tiếp!</p>
 
@@ -426,7 +89,6 @@
     </div>
 
     <script>
-        // 1. Đọc tên từ URL để hiển thị lên thiệp
         const urlParams = new URLSearchParams(window.location.search);
         const guestName = urlParams.get('name');
         const isAdmin = urlParams.get('admin'); 
@@ -435,12 +97,10 @@
             document.getElementById('guest-name').innerText = guestName;
         }
 
-        // 2. Ẩn/Hiện admin panel hợp lý
         if (guestName && isAdmin !== 'true') {
             document.getElementById('admin-box').style.display = 'none';
         }
 
-        // 3. Hàm tạo link và kích hoạt Toast thông báo
         function generateAndCopyLink() {
             const inputVal = document.getElementById('name-input').value.trim();
             if (!inputVal) {
@@ -452,14 +112,11 @@
             const finalLink = `${baseLink}?name=${encodeURIComponent(inputVal)}`;
 
             navigator.clipboard.writeText(finalLink).then(() => {
-                // Hiển thị hiệu ứng Toast nổi lên mượt mà
                 const toast = document.getElementById('toast-msg');
                 toast.classList.add('show');
                 
-                // Đổi preview thử tên khách trên thiệp
                 document.getElementById('guest-name').innerText = inputVal;
 
-                // Tự động ẩn toast sau 3 giây
                 setTimeout(() => { 
                     toast.classList.remove('show'); 
                 }, 3000);
